@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gridhrasi Assessment Scale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #4a6741);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            background: #e9ecef;
+        }
+
+        .nav-tab.active {
+            background: #007bff;
+            color: white;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #007bff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .assessment-section {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid #007bff;
+        }
+
+        .assessment-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .parameter-group {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .parameter-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .radio-option:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 8px;
+            scale: 1.2;
+        }
+
+        .radio-option.selected {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            font-weight: 600;
+        }
+
+        .score-display {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .results-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.2em;
+            margin: 10px;
+        }
+
+        .minimal { background: #d4edda; color: #155724; }
+        .mild { background: #fff3cd; color: #856404; }
+        .moderate { background: #f8d7da; color: #721c24; }
+        .severe { background: #d1ecf1; color: #0c5460; }
+
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .nidana-checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .nidana-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nidana-item:hover {
+            border-color: #007bff;
+            background: #f8f9ff;
+        }
+
+        .nidana-item.checked {
+            border-color: #28a745;
+            background: #f8fff8;
+        }
+
+        .nidana-item input[type="checkbox"] {
+            margin-right: 12px;
+            scale: 1.3;
+        }
+
+        .examination-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .exam-item {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+
+        .exam-item label {
+            font-weight: 600;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .exam-item select, .exam-item input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .radio-group {
+                flex-direction: column;
+            }
+            
+            .radio-option {
+                min-width: auto;
+            }
+            
+            .score-display {
+                position: static;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 Gridhrasi Assessment Scale</h1>
+            <p>Comprehensive Ayurvedic Diagnostic Tool for Sciatica Assessment</p>
+            <p><em>By Dr. Prakash Kumbar - EVA College of Ayurved</em></p>
+        </div>
+
+        <div class="score-display">
+            Total Score: <span id="totalScore">0</span>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showTab('differential')">Differential Assessment</button>
+            <button class="nav-tab" onclick="showTab('nidana')">Nidana Assessment</button>
+            <button class="nav-tab" onclick="showTab('symptom')">Symptom Assessment</button>
+            <button class="nav-tab" onclick="showTab('examination')">Examination</button>
+            <button class="nav-tab" onclick="showTab('results')">Results</button>
+        </div>
+
+        <!-- Differential Assessment Tab -->
+        <div id="differential" class="tab-content active">
+            <div class="assessment-section">
+                <h3>🔍 Differential Assessment: Vataja vs Vata-Kaphaja Gridhrasi</h3>
+                <div id="differentialParameters"></div>
+                <div class="results-section">
+                    <h4>Differential Diagnosis Score:</h4>
+                    <div id="differentialResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nidana Assessment Tab -->
+        <div id="nidana" class="tab-content">
+            <div class="assessment-section">
+                <h3>🎯 Nidana (Etiological Factor) Assessment</h3>
+                <p><strong>Instructions:</strong> Check all applicable etiological factors present in the patient.</p>
+                <div class="nidana-checklist" id="nidanaChecklist"></div>
+                <div class="results-section">
+                    <h4>Risk Factors Identified: <span id="nidanaCount">0</span>/12</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="nidanaProgress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symptom Assessment Tab -->
+        <div id="symptom" class="tab-content">
+            <div class="assessment-section">
+                <h3>📋 Comprehensive Symptom Assessment</h3>
+                <div id="symptomParameters"></div>
+                <div class="results-section">
+                    <h4>Symptom Severity Score: <span id="symptomScore">0</span>/36</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="symptomProgress"></div>
+                    </div>
+                    <div id="symptomSeverity"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Examination Tab -->
+        <div id="examination" class="tab-content">
+            <div class="assessment-section">
+                <h3>🩺 Clinical Examination Findings</h3>
+                <div class="examination-section">
+                    <div class="exam-item">
+                        <label for="slr">Straight Leg Raise Test:</label>
+                        <select id="slr">
+                            <option value="">Select result</option>
+                            <option value="negative">Negative</option>
+                            <option value="positive">Positive</option>
+                            <option value="bilateral">Bilateral Positive</option>
+                        </select>
+                    </div>
+                    <div class="exam-item">
+                        <label for="crossedSlr">Crossed SLR Test:</label>
+                        <select id="crossedSlr">
+                            <option value="">Select result</option>
+                            <option value="negative">Negative</option>
+                            <option value="positive">Positive</option>
+                        </select>
+                    </div>
+                    <div class="exam-item">
+                        <label for="slumpTest">Slump Test:</label>
+                        <select id="slumpTest">
+                            <option value="">Select result</option>
+                            <option value="negative">Negative</option>
+                            <option value="positive">Positive</option>
+                        </select>
+                    </div>
+                    <div class="exam-item">
+                        <label for="femoralStretch">Femoral Nerve Stretch:</label>
+                        <select id="femoralStretch">
+                            <option value="">Select result</option>
+                            <option value="negative">Negative</option>
+                            <option value="positive">Positive</option>
+                        </select>
+                    </div>
+                    <div class="exam-item">
+                        <label for="piriformis">Piriformis/FAIR Test:</label>
+                        <select id="piriformis">
+                            <option value="">Select result</option>
+                            <option value="negative">Negative</option>
+                            <option value="positive">Positive</option>
+                        </select>
+                    </div>
+                    <div class="exam-item">
+                        <label for="neurological">Neurological Examination:</label>
+                        <select id="neurological">
+                            <option value="">Select result</option>
+                            <option value="normal">Normal</option>
+                            <option value="abnormal">Abnormal</option>
+                            <option value="not-done">Not Done</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="exam-item">
+                    <label for="additionalFindings">Additional Findings:</label>
+                    <textarea id="additionalFindings" rows="4" style="width: 100%; padding: 10px; border: 2px solid #e9ecef; border-radius: 4px;" placeholder="Enter any additional clinical findings or observations..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Tab -->
+        <div id="results" class="tab-content">
+            <div class="assessment-section">
+                <h3>📊 Comprehensive Assessment Results</h3>
+                <div id="finalResults"></div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="generateReport()">📄 Generate Report</button>
+                    <button class="btn btn-reset" onclick="resetAll()">🔄 Reset All</button>
+                    <button class="btn" onclick="exportData()">💾 Export Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Assessment data
+        const differentialParams = [
+            {
+                title: "Pain Character",
+                vataja: "Sharp, Piercing, Radiating, Spasmodic",
+                vataKaphaja: "Dull, Heavy, Deep seated"
+            },
+            {
+                title: "Pain Intensity",
+                vataja: "Severe, Sudden onset",
+                vataKaphaja: "Mild to moderate, Gradual"
+            },
+            {
+                title: "Stiffness (Stambha)",
+                vataja: "Mild Or absent",
+                vataKaphaja: "Marked, Persistent"
+            },
+            {
+                title: "Numbness (Supti)",
+                vataja: "Less frequent",
+                vataKaphaja: "More prominent"
+            },
+            {
+                title: "Heaviness (Gaurava)",
+                vataja: "Absent",
+                vataKaphaja: "Significant"
+            },
+            {
+                title: "Appetite (Agni)",
+                vataja: "Irregular (Vishamagni)",
+                vataKaphaja: "Low appetite (Mandagni)"
+            },
+            {
+                title: "Bowel Habits",
+                vataja: "Constipation, Dry stool",
+                vataKaphaja: "Sluggish, Sticky stool"
+            },
+            {
+                title: "Associated Ama Signs",
+                vataja: "Absent",
+                vataKaphaja: "Present (Coated Tongue, Heaviness, Indigestion)"
+            },
+            {
+                title: "Skin Texture",
+                vataja: "Dry, Rough",
+                vataKaphaja: "Moist, Cold"
+            },
+            {
+                title: "Response To Fomentation",
+                vataja: "Quick Relief With Snehana/Swedana",
+                vataKaphaja: "Relief Only After Deepana-Pachana + Swedana"
+            },
+            {
+                title: "Energy Levels",
+                vataja: "Variable, Sometimes Hyperactive",
+                vataKaphaja: "Low, Lethargic"
+            },
+            {
+                title: "Tongue Examination",
+                vataja: "Dry, Thin, Cracked",
+                vataKaphaja: "Coated, Thick, Moist"
+            }
+        ];
+
+        const nidanaFactors = [
+            {
+                title: "Ati Vyayama (Excessive physical exertion)",
+                description: "Heavy work, walking >10,000 steps/day, gym, long distance walking/running"
+            },
+            {
+                title: "Ati Vahana (Excessive travel or riding)",
+                description: "Daily bike/car rides >30 mins, jerky rides, long commutes"
+            },
+            {
+                title: "Abhighata (Trauma or injury)",
+                description: "Recent or old trauma to spine, hip, back; fall or impact injury"
+            },
+            {
+                title: "Vishama Asana (Improper posture)",
+                description: "Bad sitting habits, faulty posture, poor ergonomics during work"
+            },
+            {
+                title: "Ativyayama (Overuse of limbs)",
+                description: "Long-standing jobs, repeated bending/lifting, household chores with strain"
+            },
+            {
+                title: "Dukha Shayana / Utkatasana",
+                description: "Use of very soft or hard mattress, long sitting on floor, uncomfortable chairs"
+            },
+            {
+                title: "Vata Prakopaka Ahara (Dry, cold, light food)",
+                description: "Excess dry snacks, fasting, cold water, irregular meals"
+            },
+            {
+                title: "Atyambupana (Excess cold water intake)",
+                description: ">3L water/day, frequent cold water / beverages"
+            },
+            {
+                title: "Daurbalya (Low muscular strength)",
+                description: "Flabby muscles, low back strength, sedentary lifestyle"
+            },
+            {
+                title: "MRI Diagnosis: Disc Prolapse/Herniation",
+                description: "Confirmed bulging disc, nerve compression seen in MRI"
+            },
+            {
+                title: "Lumbar spondylosis / canal stenosis",
+                description: "Degenerative spine, confirmed by ortho/CT/MRI"
+            },
+            {
+                title: "Past history of Gridhrasi (Sciatica)",
+                description: "≥1 episode in past, history of recurrence"
+            }
+        ];
+
+        const symptomParams = [
+            {
+                title: "Radiating Pain",
+                ayurvedicCorrelation: "Toda / Ruja / Spandana",
+                description: "Pain from lower back to foot (along sciatic nerve path)",
+                options: ["Absent", "Mild, occasional", "Moderate, frequent", "Severe, continuous"]
+            },
+            {
+                title: "Lower Back Pain",
+                ayurvedicCorrelation: "Katishoola / Pristha Shoola",
+                description: "Pain in the lumbar and sacral region",
+                options: ["Absent", "Mild pain", "Moderate pain", "Severe disabling pain"]
+            },
+            {
+                title: "Sciatic Path Pain (Sphik → Pada)",
+                ayurvedicCorrelation: "Sphik-purva to pada vedana",
+                description: "Pain sequence from buttocks to legs",
+                options: ["No spread", "Up to thigh", "Up to knee", "Extending to foot"]
+            },
+            {
+                title: "Numbness / Tingling Sensation",
+                ayurvedicCorrelation: "Suptata / Spandana",
+                description: "Paresthesia (pins and needles sensation)",
+                options: ["Absent", "Mild, occasional", "Moderate, disturbing", "Severe, persistent"]
+            },
+            {
+                title: "Muscle Weakness",
+                ayurvedicCorrelation: "Bala Hani / Gati Vikriti",
+                description: "Weakness in leg; difficulty walking/lifting leg",
+                options: ["None", "Mild weakness", "Moderate, with fatigue", "Severe, needs support"]
+            },
+            {
+                title: "Foot Drop",
+                ayurvedicCorrelation: "Pada Gamanam Dourbalya",
+                description: "Inability to lift front part of foot",
+                options: ["Absent", "Occasional dragging", "Frequent dragging", "Complete foot drop"]
+            },
+            {
+                title: "Difficulty in Standing or Walking",
+                ayurvedicCorrelation: "Vikruta Gamanam / Stambha",
+                description: "Gait difficulty due to pain or weakness",
+                options: ["Normal", "Mild discomfort", "Moderate difficulty", "Needs support / cannot walk"]
+            },
+            {
+                title: "Pain Worsens with Cough/Sneeze",
+                ayurvedicCorrelation: "Vata Prakopaka Nidana",
+                description: "Indicative of nerve root compression",
+                options: ["No change", "Slight aggravation", "Moderate aggravation", "Severe exacerbation"]
+            },
+            {
+                title: "Positive Straight Leg Raise Test",
+                ayurvedicCorrelation: "Lasika Duhkha (equiv.)",
+                description: "Sciatic pain induced while raising leg supine",
+                options: ["Negative", "Pain at 60°–90°", "Pain at 30°–60°", "Pain at <30°"]
+            },
+            {
+                title: "Burning / Electric Shock Sensation",
+                ayurvedicCorrelation: "Toda / Teevra Vedana",
+                description: "Neuropathic signs",
+                options: ["Absent", "Mild occasional", "Frequent episodes", "Severe, constant"]
+            },
+            {
+                title: "Limited Range of Motion (Spine / Hip / Leg)",
+                ayurvedicCorrelation: "Stambha / Gati Hani",
+                description: "Restricted movement due to stiffness/pain",
+                options: ["Full ROM", "Slight restriction", "Moderate limitation", "Severe limitation"]
+            },
+            {
+                title: "Laterality of Symptoms",
+                ayurvedicCorrelation: "Eka Paksha Vedana",
+                description: "One-sided pain distribution",
+                options: ["Absent", "Bilateral", "Unilateral, mild", "Unilateral, severe"]
+            }
+        ];
+
+        let assessmentData = {
+            differential: {},
+            nidana: {},
+            symptoms: {},
+            examination: {}
+        };
+
+        // Initialize the application
+        function init() {
+            loadDifferentialParams();
+            loadNidanaFactors();
+            loadSymptomParams();
+            updateScores();
+        }
+
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Update results if results tab is shown
+            if (tabName === 'results') {
+                updateFinalResults();
+            }
+        }
+
+        function loadDifferentialParams() {
+            const container = document.getElementById('differentialParameters');
+            container.innerHTML = '';
+
+            differentialParams.forEach((param, index) => {
+                const div = document.createElement('div');
+                div.className = 'parameter-group';
+                div.innerHTML = `
+                    <div class="parameter-title">${param.title}</div>
+                    <div class="radio-group">
+                        <label class="radio-option" onclick="selectDifferential(${index}, 'vataja')">
+                            <input type="radio" name="diff_${index}" value="vataja">
+                            <div>
+                                <strong>Vataja:</strong><br>
+                                ${param.vataja}
+                            </div>
+                        </label>
+                        <label class="radio-option" onclick="selectDifferential(${index}, 'both')">
+                            <input type="radio" name="diff_${index}" value="both">
+                            <div>
+                                <strong>Both Present:</strong><br>
+                                Mixed presentation
+                            </div>
+                        </label>
+                        <label class="radio-option" onclick="selectDifferential(${index}, 'vataKaphaja')">
+                            <input type="radio" name="diff_${index}" value="vataKaphaja">
+                            <div>
+                                <strong>Vata-Kaphaja:</strong><br>
+                                ${param.vataKaphaja}
+                            </div>
+                        </label>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadNidanaFactors() {
+            const container = document.getElementById('nidanaChecklist');
+            container.innerHTML = '';
+
+            nidanaFactors.forEach((factor, index) => {
+                const div = document.createElement('div');
+                div.className = 'nidana-item';
+                div.onclick = () => toggleNidana(index);
+                div.innerHTML = `
+                    <input type="checkbox" id="nidana_${index}" onchange="toggleNidana(${index})">
+                    <div>
+                        <strong>${factor.title}</strong><br>
+                        <small>${factor.description}</small>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function loadSymptomParams() {
+            const container = document.getElementById('symptomParameters');
+            container.innerHTML = '';
+
+            symptomParams.forEach((param, index) => {
+                const div = document.createElement('div');
+                div.className = 'parameter-group';
+                div.innerHTML = `
+                    <div class="parameter-title">
+                        ${param.title}
+                        <div style="font-size: 0.9em; color: #666; font-weight: normal;">
+                            <em>${param.ayurvedicCorrelation}</em> - ${param.description}
+                        </div>
+                    </div>
+                    <div class="radio-group">
+                        ${param.options.map((option, optIndex) => `
+                            <label class="radio-option" onclick="selectSymptom(${index}, ${optIndex})">
+                                <input type="radio" name="symptom_${index}" value="${optIndex}">
+                                <div>
+                                    <strong>Score ${optIndex}:</strong><br>
+                                    ${option}
+                                </div>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selectDifferential(paramIndex, value) {
+            assessmentData.differential[paramIndex] = value;
+            updateDifferentialUI(paramIndex, value);
+            updateDifferentialResults();
+        }
+
+        function updateDifferentialUI(paramIndex, selectedValue) {
+            const radioOptions = document.querySelectorAll(`input[name="diff_${paramIndex}"]`);
+            radioOptions.forEach(radio => {
+                const option = radio.closest('.radio-option');
+                if (radio.value === selectedValue) {
+                    option.classList.add('selected');
+                    radio.checked = true;
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        function updateDifferentialResults() {
+            let vatajaScore = 0;
+            let vataKaphajaScore = 0;
+
+            Object.values(assessmentData.differential).forEach(value => {
+                if (value === 'vataja') {
+                    vatajaScore += 2;
+                } else if (value === 'vataKaphaja') {
+                    vataKaphajaScore += 2;
+                } else if (value === 'both') {
+                    vatajaScore += 1;
+                    vataKaphajaScore += 1;
+                }
+            });
+
+            const resultDiv = document.getElementById('differentialResult');
+            let diagnosis = '';
+            if (vatajaScore > vataKaphajaScore) {
+                diagnosis = `<div class="severity-badge mild">Vataja Gridhrasi Predominant</div>`;
+            } else if (vataKaphajaScore > vatajaScore) {
+                diagnosis = `<div class="severity-badge moderate">Vata-Kaphaja Gridhrasi Predominant</div>`;
+            } else {
+                diagnosis = `<div class="severity-badge minimal">Mixed Presentation</div>`;
+            }
+
+            resultDiv.innerHTML = `
+                <p>Vataja Score: <strong>${vatajaScore}</strong> | Vata-Kaphaja Score: <strong>${vataKaphajaScore}</strong></p>
+                ${diagnosis}
+            `;
+        }
+
+        function toggleNidana(index) {
+            const checkbox = document.getElementById(`nidana_${index}`);
+            const item = checkbox.closest('.nidana-item');
+            
+            if (checkbox.checked) {
+                assessmentData.nidana[index] = true;
+                item.classList.add('checked');
+            } else {
+                delete assessmentData.nidana[index];
+                item.classList.remove('checked');
+            }
+            updateNidanaResults();
+        }
+
+        function updateNidanaResults() {
+            const count = Object.keys(assessmentData.nidana).length;
+            document.getElementById('nidanaCount').textContent = count;
+            
+            const percentage = (count / 12) * 100;
+            document.getElementById('nidanaProgress').style.width = `${percentage}%`;
+        }
+
+        function selectSymptom(paramIndex, score) {
+            assessmentData.symptoms[paramIndex] = score;
+            updateSymptomUI(paramIndex, score);
+            updateSymptomResults();
+        }
+
+        function updateSymptomUI(paramIndex, selectedScore) {
+            const radioOptions = document.querySelectorAll(`input[name="symptom_${paramIndex}"]`);
+            radioOptions.forEach(radio => {
+                const option = radio.closest('.radio-option');
+                if (parseInt(radio.value) === selectedScore) {
+                    option.classList.add('selected');
+                    radio.checked = true;
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        function updateSymptomResults() {
+            const totalScore = Object.values(assessmentData.symptoms).reduce((sum, score) => sum + score, 0);
+            document.getElementById('symptomScore').textContent = totalScore;
+            
+            const percentage = (totalScore / 36) * 100;
+            document.getElementById('symptomProgress').style.width = `${percentage}%`;
+            
+            let severity = '';
+            let severityClass = '';
+            
+            if (totalScore <= 10) {
+                severity = 'Minimal or No Sciatica';
+                severityClass = 'minimal';
+            } else if (totalScore <= 20) {
+                severity = 'Mild Gridhrasi';
+                severityClass = 'mild';
+            } else if (totalScore <= 30) {
+                severity = 'Moderate Gridhrasi';
+                severityClass = 'moderate';
+            } else {
+                severity = 'Severe Gridhrasi';
+                severityClass = 'severe';
+            }
+            
+            document.getElementById('symptomSeverity').innerHTML = `
+                <div class="severity-badge ${severityClass}">${severity}</div>
+            `;
+        }
+
+        function updateScores() {
+            const symptomScore = Object.values(assessmentData.symptoms).reduce((sum, score) => sum + score, 0);
+            document.getElementById('totalScore').textContent = symptomScore;
+        }
+
+        function updateFinalResults() {
+            const symptomScore = Object.values(assessmentData.symptoms).reduce((sum, score) => sum + score, 0);
+            const nidanaCount = Object.keys(assessmentData.nidana).length;
+            
+            let vatajaScore = 0;
+            let vataKaphajaScore = 0;
+            Object.values(assessmentData.differential).forEach(value => {
+                if (value === 'vataja') vatajaScore += 2;
+                else if (value === 'vataKaphaja') vataKaphajaScore += 2;
+                else if (value === 'both') { vatajaScore += 1; vataKaphajaScore += 1; }
+            });
+
+            let diagnosis = '';
+            if (vatajaScore > vataKaphajaScore) {
+                diagnosis = 'Vataja Gridhrasi Predominant';
+            } else if (vataKaphajaScore > vatajaScore) {
+                diagnosis = 'Vata-Kaphaja Gridhrasi Predominant';
+            } else {
+                diagnosis = 'Mixed Presentation';
+            }
+
+            let severity = '';
+            if (symptomScore <= 10) severity = 'Minimal or No Sciatica';
+            else if (symptomScore <= 20) severity = 'Mild Gridhrasi';
+            else if (symptomScore <= 30) severity = 'Moderate Gridhrasi';
+            else severity = 'Severe Gridhrasi';
+
+            const resultsDiv = document.getElementById('finalResults');
+            resultsDiv.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #007bff;">
+                        <h4>🎯 Symptom Assessment</h4>
+                        <p><strong>Total Score:</strong> ${symptomScore}/36</p>
+                        <p><strong>Severity:</strong> ${severity}</p>
+                        <div class="progress-bar" style="margin: 10px 0;">
+                            <div class="progress-fill" style="width: ${(symptomScore/36)*100}%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #28a745;">
+                        <h4>🔍 Differential Diagnosis</h4>
+                        <p><strong>Vataja Score:</strong> ${vatajaScore}</p>
+                        <p><strong>Vata-Kaphaja Score:</strong> ${vataKaphajaScore}</p>
+                        <p><strong>Diagnosis:</strong> ${diagnosis}</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #ffc107;">
+                        <h4>⚠️ Risk Factors</h4>
+                        <p><strong>Nidana Factors:</strong> ${nidanaCount}/12</p>
+                        <p><strong>Risk Level:</strong> ${nidanaCount >= 8 ? 'High' : nidanaCount >= 4 ? 'Moderate' : 'Low'}</p>
+                        <div class="progress-bar" style="margin: 10px 0;">
+                            <div class="progress-fill" style="width: ${(nidanaCount/12)*100}%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #dc3545;">
+                        <h4>🩺 Examination Summary</h4>
+                        <p><strong>Tests Completed:</strong> ${getExaminationSummary()}</p>
+                        <p><strong>Key Findings:</strong> ${getKeyFindings()}</p>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 20px; background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 10px; text-align: center;">
+                    <h3>📋 Clinical Summary</h3>
+                    <p style="font-size: 1.1em; margin: 10px 0;"><strong>Primary Diagnosis:</strong> ${diagnosis}</p>
+                    <p style="font-size: 1.1em; margin: 10px 0;"><strong>Severity Grade:</strong> ${severity}</p>
+                    <p style="font-size: 1.1em; margin: 10px 0;"><strong>Risk Assessment:</strong> ${nidanaCount >= 8 ? 'High Risk' : nidanaCount >= 4 ? 'Moderate Risk' : 'Low Risk'}</p>
+                </div>
+            `;
+        }
+
+        function getExaminationSummary() {
+            const examElements = ['slr', 'crossedSlr', 'slumpTest', 'femoralStretch', 'piriformis', 'neurological'];
+            let completed = 0;
+            examElements.forEach(id => {
+                if (document.getElementById(id).value) completed++;
+            });
+            return `${completed}/${examElements.length}`;
+        }
+
+        function getKeyFindings() {
+            const examElements = ['slr', 'crossedSlr', 'slumpTest', 'femoralStretch', 'piriformis', 'neurological'];
+            const positiveFindings = [];
+            
+            examElements.forEach(id => {
+                const value = document.getElementById(id).value;
+                if (value === 'positive' || value === 'bilateral' || value === 'abnormal') {
+                    positiveFindings.push(id.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()));
+                }
+            });
+            
+            return positiveFindings.length > 0 ? positiveFindings.join(', ') : 'No significant findings';
+        }
+
+        function generateReport() {
+            const currentDate = new Date().toLocaleDateString();
+            const symptomScore = Object.values(assessmentData.symptoms).reduce((sum, score) => sum + score, 0);
+            const nidanaCount = Object.keys(assessmentData.nidana).length;
+            
+            let vatajaScore = 0;
+            let vataKaphajaScore = 0;
+            Object.values(assessmentData.differential).forEach(value => {
+                if (value === 'vataja') vatajaScore += 2;
+                else if (value === 'vataKaphaja') vataKaphajaScore += 2;
+                else if (value === 'both') { vatajaScore += 1; vataKaphajaScore += 1; }
+            });
+
+            let diagnosis = '';
+            if (vatajaScore > vataKaphajaScore) {
+                diagnosis = 'Vataja Gridhrasi Predominant';
+            } else if (vataKaphajaScore > vatajaScore) {
+                diagnosis = 'Vata-Kaphaja Gridhrasi Predominant';
+            } else {
+                diagnosis = 'Mixed Presentation';
+            }
+
+            let severity = '';
+            if (symptomScore <= 10) severity = 'Minimal or No Sciatica';
+            else if (symptomScore <= 20) severity = 'Mild Gridhrasi';
+            else if (symptomScore <= 30) severity = 'Moderate Gridhrasi';
+            else severity = 'Severe Gridhrasi';
+
+            const additionalFindings = document.getElementById('additionalFindings').value || 'None reported';
+
+            const report = `
+GRIDHRASI ASSESSMENT REPORT
+Generated on: ${currentDate}
+Assessment Tool by: Dr. Prakash Kumbar, EVA College of Ayurved
+
+=====================================
+
+PATIENT ASSESSMENT SUMMARY:
+
+1. SYMPTOM SEVERITY ASSESSMENT:
+   - Total Score: ${symptomScore}/36
+   - Severity Grade: ${severity}
+   
+2. DIFFERENTIAL DIAGNOSIS:
+   - Vataja Score: ${vatajaScore}
+   - Vata-Kaphaja Score: ${vataKaphajaScore}
+   - Primary Diagnosis: ${diagnosis}
+   
+3. ETIOLOGICAL FACTORS (NIDANA):
+   - Risk Factors Present: ${nidanaCount}/12
+   - Risk Level: ${nidanaCount >= 8 ? 'High' : nidanaCount >= 4 ? 'Moderate' : 'Low'}
+   
+4. CLINICAL EXAMINATION:
+   - Tests Completed: ${getExaminationSummary()}
+   - Key Findings: ${getKeyFindings()}
+   - Additional Findings: ${additionalFindings}
+
+=====================================
+
+RECOMMENDATIONS:
+${getRecommendations(diagnosis, severity, nidanaCount)}
+
+=====================================
+
+Note: This assessment is based on traditional Ayurvedic diagnostic principles 
+and should be used in conjunction with modern clinical evaluation.
+            `;
+
+            // Create downloadable report
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Gridhrasi_Assessment_Report_${currentDate.replace(/\//g, '-')}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            alert('Assessment report has been generated and downloaded!');
+        }
+
+        function getRecommendations(diagnosis, severity, nidanaCount) {
+            let recommendations = [];
+
+            // Treatment recommendations based on diagnosis
+            if (diagnosis.includes('Vataja')) {
+                recommendations.push('- Vataja Gridhrasi Treatment: Focus on Snehana (oleation) and Swedana (sudation)');
+                recommendations.push('- Recommended therapies: Abhyanga, Karna Purana, Basti');
+                recommendations.push('- Medications: Vata-pacifying formulations like Mahanarayana Taila');
+            } else if (diagnosis.includes('Vata-Kaphaja')) {
+                recommendations.push('- Vata-Kaphaja Gridhrasi Treatment: Initial Deepana-Pachana followed by Snehana-Swedana');
+                recommendations.push('- Recommended therapies: Ruksha Swedana initially, then Snigdha Swedana');
+                recommendations.push('- Medications: Kapha-Vata pacifying formulations');
+            }
+
+            // Severity-based recommendations
+            if (severity === 'Severe Gridhrasi') {
+                recommendations.push('- Immediate medical attention recommended');
+                recommendations.push('- Consider Panchakarma therapy under expert supervision');
+                recommendations.push('- Strict bed rest and activity modification');
+            } else if (severity === 'Moderate Gridhrasi') {
+                recommendations.push('- Regular Ayurvedic consultation recommended');
+                recommendations.push('- Lifestyle modifications and therapeutic interventions');
+                recommendations.push('- Regular follow-up assessments');
+            }
+
+            // Risk factor management
+            if (nidanaCount >= 6) {
+                recommendations.push('- Address multiple risk factors identified');
+                recommendations.push('- Lifestyle counseling for preventive care');
+                recommendations.push('- Ergonomic improvements and posture correction');
+            }
+
+            return recommendations.join('\n');
+        }
+
+        function exportData() {
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                assessmentData: assessmentData,
+                scores: {
+                    symptomScore: Object.values(assessmentData.symptoms).reduce((sum, score) => sum + score, 0),
+                    nidanaCount: Object.keys(assessmentData.nidana).length,
+                    differentialScores: calculateDifferentialScores()
+                },
+                examination: getExaminationData(),
+                additionalFindings: document.getElementById('additionalFindings').value
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Gridhrasi_Assessment_Data_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+
+            alert('Assessment data has been exported successfully!');
+        }
+
+        function calculateDifferentialScores() {
+            let vatajaScore = 0;
+            let vataKaphajaScore = 0;
+            Object.values(assessmentData.differential).forEach(value => {
+                if (value === 'vataja') vatajaScore += 2;
+                else if (value === 'vataKaphaja') vataKaphajaScore += 2;
+                else if (value === 'both') { vatajaScore += 1; vataKaphajaScore += 1; }
+            });
+            return { vatajaScore, vataKaphajaScore };
+        }
+
+        function getExaminationData() {
+            const examElements = ['slr', 'crossedSlr', 'slumpTest', 'femoralStretch', 'piriformis', 'neurological'];
+            const examData = {};
+            examElements.forEach(id => {
+                examData[id] = document.getElementById(id).value;
+            });
+            return examData;
+        }
+
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all assessments? This action cannot be undone.')) {
+                assessmentData = {
+                    differential: {},
+                    nidana: {},
+                    symptoms: {},
+                    examination: {}
+                };
+                
+                // Reset all form elements
+                document.querySelectorAll('input[type="radio"]').forEach(input => {
+                    input.checked = false;
+                    input.closest('.radio-option').classList.remove('selected');
+                });
+                
+                document.querySelectorAll('input[type="checkbox"]').forEach(input => {
+                    input.checked = false;
+                    input.closest('.nidana-item').classList.remove('checked');
+                });
+                
+                document.querySelectorAll('select').forEach(select => {
+                    select.selectedIndex = 0;
+                });
+                
+                document.getElementById('additionalFindings').value = '';
+                
+                // Reset displays
+                document.getElementById('totalScore').textContent = '0';
+                document.getElementById('symptomScore').textContent = '0';
+                document.getElementById('nidanaCount').textContent = '0';
+                document.getElementById('symptomProgress').style.width = '0%';
+                document.getElementById('nidanaProgress').style.width = '0%';
+                document.getElementById('differentialResult').innerHTML = '';
+                document.getElementById('symptomSeverity').innerHTML = '';
+                document.getElementById('finalResults').innerHTML = '';
+                
+                alert('All assessments have been reset successfully!');
+            }
+        }
+
+        // Auto-update scores when symptoms change
+        setInterval(() => {
+            updateScores();
+        }, 1000);
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
+                
